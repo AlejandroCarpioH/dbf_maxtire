@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Documentos xmlns="java://cl.zofri.svrp.xDocuCargaMasiva">
+	<Documento>
+		<numeroInterno>013474</numeroInterno>
+		<descripcionDocumento>DECLARACION SALIDA A MODULO</descripcionDocumento>
+		<codTipoDocumento>  7</codTipoDocumento>
+		<codMoneda>2</codMoneda>
+		<codAduana></codAduana>
+		<codOrigenMercancia></codOrigenMercancia>
+		<rutRepresentante1>03871582-8</rutRepresentante1>
+		<rutRepresentante2>
+		<cantidadBultos>  10</cantidadBultos>
+		<informacionAdicional></informacionAdicional>
+		<DocumentosSalida>
+			<DocumentoSalida>
+				<rutUsuario>77630340-2</rutUsuario>
+				<codUbicacionOrigen/>01-03-006 </codUbicacionOrigen>
+				<codUbicacionDestino/>05- B-2090 </codUbicacionDestino>
+				<PatenteVehiculo/></PatenteVehiculo>
+				<Glosa/></Glosa>
+				<detallesSalida>
+					<DetalleSalida>
+						<nroItem>001</nroItem>
+						<cantidad>      1.00</cantidad>
+						<valorUnitario/>
+						<nroItemIngreso>019-06-003409-001</nroItemIngreso>
+					</DetalleSalida>
+					<DetalleSalida>
+						<nroItem>002</nroItem>
+						<cantidad>      1.00</cantidad>
+						<valorUnitario/>
+						<nroItemIngreso>019-06-001059-013</nroItemIngreso>
+					</DetalleSalida>
+					<DetalleSalida>
+						<nroItem>003</nroItem>
+						<cantidad>      1.00</cantidad>
+						<valorUnitario/>
+						<nroItemIngreso>019-06-005724-001</nroItemIngreso>
+					</DetalleSalida>
+				</detallesSalida>
