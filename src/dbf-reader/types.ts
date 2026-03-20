@@ -96,7 +96,118 @@ export interface dbf_inventario {
   VIUPROD2: string | null;
   NROCONT: string;
 }
-
+export interface comprasZetas {
+  KNUMEZET: string,
+  ADULEGAL: string,
+  CODUNICO: string,
+  CODPRODU: string,
+  ARANCEL: number,
+  PAISORIGEN: string,
+  PAISPROCE: string,
+  UNIDADDD: string,
+  DESUNIDA: string,
+  UNIXSET: number,
+  CODVEH: string,
+  DCODVEH: string,
+  CODVDE: string,
+  DCODVDE: string,
+  NOMBRE: string,
+  NOMBREC: string,
+  CMARCA: string,
+  MARCA: string,
+  MODELO: string,
+  TIPO: string,
+  TIPOENC: string,
+  DTIPOENC: string,
+  SISTRAC: string,
+  DSISTRAC: string,
+  SERIE: string,
+  CHASSIS: string,
+  MOTOR: string,
+  CILINDRA: number,
+  ASIENTO: number,
+  CARGATON: number,
+  CARGAKGS: number,
+  PESOS: number,
+  CABINA: string,
+  CABINAD: string,
+  ADIC01: string,
+  ADIC02: string,
+  ADIC03: string,
+  DESCRIP: string,
+  TIPOARTI: string,
+  SDO_CRITI: number,
+  PRC_SRF: number,
+  PRC_TRA: number,
+  PRC_EMP: number,
+  MANNO: number,
+  PORCCOMP: number,
+  CAPA_KG: number,
+  CAPA_MB: number,
+  CAPA_GR: number,
+  CAPA_CL: number,
+  CAPA_CC: number,
+  CAPA_ML: number,
+  CAPA_UNI: number,
+  CAPA_CIG: number,
+  NUM_FRANCE: number,
+  MAT_CAPE: number,
+  MAT_PLAN: number,
+  TALLA: number,
+  TIP_ENV: string,
+  DTIP_ENV: string,
+  TIP_PRODU: string,
+  PRESENTA: string,
+  FABRICA: string,
+  VARIEDAD: string,
+  SOF_TIPO: string,
+  SOF_NOM: string,
+  SOF_CMARCA: string,
+  SOF_MARCA: string,
+  VPESO: number,
+  COLOR0: string,
+  DCOLOR0: string,
+  COLOR1: string,
+  DCOLOR1: string,
+  COLOR2: string,
+  DCOLOR2: string,
+  COLOR3: string,
+  DCOLOR3: string,
+  TIP_COMB: string,
+  NOM_COMB: string,
+  SIG_COMB: string,
+  IMAGEN: string,
+  DESCRIP2: string,
+  CODBARRA: string,
+  NUEVO: string | null,
+  PBV: string | null,
+  TIPCAR: string,
+  TIPCARD: string,
+  VEHDES: string,
+  VEHDESD: string,
+  EJE_NRO: string | null,
+  EJE_DISP: string,
+  EJE_RUEDAS: string | null,
+  PUERTAS: string | null,
+  POTMOTOR: string | null,
+  PASAJERO: string | null,
+  ORGEXT1: string,
+  COBUENO1: string,
+  NVBUENO1: string,
+  FVBUENO1: string | null,
+  OVBUENO1: string,
+  TPBUENO1: string,
+  CRBUENO1: string,
+  ORGEXT2: string,
+  COBUENO2: string,
+  NVBUENO2: string,
+  FVBUENO2: string | null,
+  OVBUENO2: string,
+  TPBUENO2: string,
+  CRBUENO2: string,
+  NROCONT: string
+  NROFACT: string
+}
 export interface seguimientoDto {
   CAJA: string;
   TIPOMOVI: string;
@@ -209,6 +320,120 @@ export interface seguimientoDto {
   RESOLSII: string | null;
   GARANTIA: string | null;
   FACTURA: string;
+}
+
+export interface movimientoDocumento {
+  CAJA: string,
+  DOCUZOFR: string,
+  MONEDAAA: string,
+  TIPOMOVI: string,
+  FECHANVT: Date,
+  KNUMFOLI: string,
+  FECHADOC: Date,
+  KNUMDOCU: string,
+  SUBFACTU: string,
+  UB_MERCA: string,
+  USUARIOO: string,
+  OCUPADO: string,
+  CODCLASI: string,
+  FOLIOUNI: string,
+  VISAADUA: string,
+  VISACPDD: string,
+  FECHCONF: Date,
+  HORACONF: string,
+  USUACONF: string,
+  CODIVERI: string,
+  CORREDIR: string | null,
+  PCODAREA: string | null,
+  PESTADOT: string,
+  PFORMPAG: string,
+  KNUMERUT: string,
+  KCODCLIE: string | null,
+  KCODCLI2: string | null,
+  NUMFOLI2: string,
+  PCODIMPT: string,
+  TCODAVAN: string,
+  PCODIVIA: string,
+  TCODPLAZ: string,
+  PCODSEGU: string,
+  PCODPAIS: string | null,
+  MODULOSS: string,
+  PCODDEST: string,
+  RESOLIMP: string,
+  FECHARES: string | null,
+  CODANEXO: string,
+  DESANEXO: string,
+  CANANEXO: string | null,
+  MARANEXO: string,
+  PESANEXO: string | null,
+  CODANEXO1: string,
+  DESANEXO1: string,
+  CANANEXO1: string | null,
+  MARANEXO1: string,
+  PESANEXO1: string | null,
+  CONTINUO: string,
+  HOJASSSS: string | null,
+  DESCRIP: string,
+  KINCLIVA: string,
+  RUTCOMPR: string,
+  NOMCOMPR: string,
+  INFVENTA: string,
+  VL_TIPTOT: string,
+  MONECMP: string,
+  VL_FACTUR: number,
+  VL_GASTOS: number,
+  VL_FOB: number,
+  VL_FLETE: number,
+  VL_SEGURO: number,
+  VL_CIF: number,
+  VL_VIU: number,
+  CODPROCE: string,
+  CODDESTI: string,
+  TIPO: string | null,
+  ZNCODDES: string,
+  ZNCODEXT: string,
+  REGION: string,
+  MEDTRANS: string,
+  TIPOCAMB: null,
+  RESNUM: string,
+  RESFEC: string | null,
+  RESEMI: string,
+  UBCODDES: string,
+  SEGPAGA: string,
+  MONEDCMP: string,
+  CONSUMO: string,
+  OBSERVA: string,
+  OBSERVA2: string,
+  CODBULTO: string | null,
+  CANBULTO: string | null,
+  PESBULTO: string | null,
+  CLIENTE: string,
+  VAL_DOC: string | null,
+  VAL_REA: string | null,
+  VL_ZOF: string | null,
+  VL_IVA: string | null,
+  VL_IAD: string | null,
+  VL_TOT: string | null,
+  NTESTADO: string,
+  FECHAVIS: string | null,
+  NESTADO: string,
+  IMPADIC1: string,
+  CARGASRF: string,
+  CADUANA: string,
+  LEGALIZA: string,
+  VAL_IAD: string | null,
+  VENDEDOR: string,
+  ESTANOTA: string,
+  ID_TDOCU: string,
+  TCODPCO: string,
+  PARIDAD: string | null,
+  UTM: string | null,
+  VAL_IVA: string | null,
+  VAL_IZF: string | null,
+  IMPTOZOF: string | null,
+  RESOLSII: string | null,
+  GARANTIA: string | null,
+  FACTURA: string
 }
 
 export interface venta {
@@ -338,22 +563,38 @@ export interface direccion {
   CODREG: string;
   REGION: string;
 }
-export interface ventasdiarias {
+export interface ventasdelDia {
   cliente: string;
   fecha: string;
   hora: string;
   rut: string;
   notaVenta: string;
   estado: string;
-  // items: {
-  //   folio: string;
-  //   codigo_unico: string;
-  //   cantidad: number;
-  //   precio_und: number;
-  //   precio_total: number;
-  //   visacion: string;
-  //   descripcion: string;
-  // }[];
+  items: {
+    folio: string;
+    codigo_unico: string;
+    cantidad: number;
+    precio_und: number;
+    precio_total: number;
+    visacion: string;
+    descripcion: string;
+  }[];
+}
+
+export interface ventasDiarias {
+  cliente: string;
+  fecha: string;
+  hora: string;
+  rut: string;
+  notaVenta: string;
+  estado: string;
+  items: {
+    folio: string;
+    cantidad: number;
+    id_interno: string;
+    precio_total: number;
+    precio_unidad: number;
+  }[];
 }
 
 export interface clienteDTO {
@@ -361,10 +602,56 @@ export interface clienteDTO {
   rut: string;
   ciudad: string;
   codigo_cliente: number;
+  digito_verificador: string
 }
 
 export interface direccionesDTO {
   direccion: string;
   ciudad: string;
   codigo_cliente: number;
+}
+
+export interface ventasDTO {
+  fecha: Date;
+  folio: string;
+  nota_venta: string;
+  total: number;
+  rut: string
+  items: {
+    folio: string;
+    cantidad: number;
+    id_interno: string;
+    precio_total: number;
+    precio_unidad: number;
+  }[]
+}
+
+export interface items_por_venta {
+  codigo_unico: string;
+  cantidad: number;
+  precio_und: number;
+  precio_total: number;
+  visacion: string;
+  descripcion: string;
+  nota_venta: string
+}
+export interface venta_diaria {
+  folio: string;
+  cantidad: number;
+  id_interno: string;
+  precio_total: number;
+  precio_unidad: number;
+}
+
+export interface compras_traspaso {
+  numero_ingreso: string;
+  tipo_documento: string
+  fecha: Date;
+  codigo: string;
+}
+
+export interface neumatico_dto {
+
+  id_interno_completo: string;
+
 }
