@@ -7,7 +7,6 @@ import { DBFFile } from 'dbffile';
 import {
   cliente,
   clienteDTO,
-  comprasZetas,
   dbf_inventario,
   direccion,
   direccionesDTO,
@@ -86,6 +85,7 @@ export class DbfReaderService implements OnModuleInit {
       estado: string;
       folio: string
       total: number
+      vendedor_codigo: string
       // items: {
       //   folio: string;
       //   codigo_unico: string;
@@ -107,6 +107,7 @@ export class DbfReaderService implements OnModuleInit {
       tipo: string,
       vendedor: string,
       vend: string,
+      vendedor_codigo: string
     }>()
 
 
@@ -116,6 +117,8 @@ export class DbfReaderService implements OnModuleInit {
     console.log('iniciado');
     this.watchDBF();
   }
+
+
 
   watchDBF() {
     const watcher = chokidar.watch(this.ruta, {
@@ -146,8 +149,14 @@ export class DbfReaderService implements OnModuleInit {
     // console.log(dbf.fields)
 
     const seguimientoDto = (await dbf.readRecords()) as any as seguimientoDto[];
-
-
+    //  KNUMDOCU: '000000010864',
+    //  KNUMFOLI: '011995',
+    // seguimientoDto.forEach(s => {
+    //   if (s.KNUMDOCU === '000000013786') {
+    //     console.log(s)
+    //   }
+    // })
+    // return
 
 
     const mapa = new Map<number, { vendedor: string; id: number }>();
@@ -178,7 +187,8 @@ export class DbfReaderService implements OnModuleInit {
           rut: dto.KCODCLIE ?? "",
           tipo: dto.TIPOMOVI,
           vendedor: vendedores[Number(dto.KNUMERUT)],
-          vend: dto.KNUMERUT
+          vend: dto.KNUMERUT,
+          vendedor_codigo: dto.KNUMERUT
 
         })
         // mapa.set(Number(dto.KNUMDOCU), {
@@ -193,8 +203,18 @@ export class DbfReaderService implements OnModuleInit {
     return { message: 'ok' };
   }
 
+  async usuarios() {
+    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\personal.dbf';
+
+    const dbfs = await DBFFile.open(ruta);
+    const usuarios = await dbfs.readRecords()
+
+    console.log(usuarios)
+  }
+
   async test() {
-    // this.compraZetaTraspaso()
+    this.seguimientoDto()
+    // await this.usuarios()
     return
     const movimientoDocumento = 'Z:\\newdesar\\Winfac_nna\\Base\\movidcto.dbf'; // trae cliente comprador o vendedor y documento total 
     const documentosSve = 'Z:\\newdesar\\Winfac_nna\\docsve.dbf';
@@ -280,10 +300,12 @@ export class DbfReaderService implements OnModuleInit {
 
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
       let rut = ""
+      let vendedor_codigo = ""
       console.log(ventaxitem)
       const seguimiento = this.seguimientoMap.get(venta.KNUMFOLI)
       if (seguimiento) {
         rut = seguimiento.rut
+        vendedor_codigo = seguimiento.vendedor_codigo
       }
       let total = 0
       if (ventaxitem !== undefined) {
@@ -302,6 +324,7 @@ export class DbfReaderService implements OnModuleInit {
           fecha: venta.FECHA,
           hora: venta.HORACARGA,
           notaVenta: venta.KNUMFOLI,
+          vendedor_codigo,
           folio: this.valores_sin_folio.includes(venta.KNUMFOLI) ? this.numerosVisacion(venta.KNUMFOLI) : ventaxitem !== undefined ? ventaxitem[0].folio : "",
           total,
           rut,
@@ -402,7 +425,9 @@ export class DbfReaderService implements OnModuleInit {
           ventaDiaria.push({
             folio: d.folio,
             cantidad: d.cantidad,
+            descripcion: d.descripcion,
             id_interno: d.codigo_unico,
+            visacion: d.visacion,
             precio_total: d.precio_total,
             precio_unidad: d.precio_und
           })
@@ -434,10 +459,12 @@ export class DbfReaderService implements OnModuleInit {
     const ventas = (await dbf.readRecords()) as any as venta[];
 
     // ventas.forEach(v => {
-    //   if (v.KNUMFOLI === "002558") {
+    //   if (v.ESTADO !== "CONFIRMADO" && v.ESTADO !== "VISADO") {
     //     console.log(v)
     //   }
     // })
+
+    // return
 
 
 
@@ -446,6 +473,7 @@ export class DbfReaderService implements OnModuleInit {
     ventas.forEach((venta) => {
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
       let rut = ""
+      let vendedor_codigo = ""
 
 
 
@@ -458,6 +486,7 @@ export class DbfReaderService implements OnModuleInit {
         // console.log(ventaxitem[0].folio)
         if (seguimiento) {
           rut = seguimiento.rut
+          vendedor_codigo = seguimiento.vendedor_codigo
         }
       }
 
@@ -472,6 +501,7 @@ export class DbfReaderService implements OnModuleInit {
           fecha: venta.FECHA,
           hora: venta.HORACARGA,
           notaVenta: venta.KNUMFOLI,
+          vendedor_codigo: vendedor_codigo,
           folio: this.valores_sin_folio.includes(venta.KNUMFOLI) ? this.numerosVisacion(venta.KNUMFOLI) : ventaxitem !== undefined ? ventaxitem[0].folio : "",
           total,
           rut,
@@ -498,6 +528,8 @@ export class DbfReaderService implements OnModuleInit {
           ventaDiaria.push({
             folio: d.folio,
             cantidad: d.cantidad,
+            descripcion: d.descripcion,
+            visacion: d.visacion,
             id_interno: d.codigo_unico,
             precio_total: Math.round(d.precio_total),
             precio_unidad: Math.round(d.precio_und)
@@ -521,25 +553,31 @@ export class DbfReaderService implements OnModuleInit {
           nota_venta: venta.notaVenta,
           total: Math.round(venta.total),
           rut: venta.rut,
+          vendedor_codigo: venta.vendedor_codigo,
           items: ventaDiaria
 
         })
     })
-    ventasdto.forEach(v => {
-      console.log({
-        fecha: v.fecha,
-        folio: v.folio,
-        nota_venta: v.nota_venta,
-        total: v.total,
-        rut: v.rut,
-        items: [
-          ...v.items
-        ]
+    // ventasdto.forEach(v => {
+    //   console.log({
+    //     fecha: v.fecha,
+    //     folio: v.folio,
+    //     nota_venta: v.nota_venta,
+    //     total: v.total,
+    //     rut: v.rut,
+    //     items: [
+    //       ...v.items
+    //     ]
 
-      })
-    })
+    //   })
+    // })
 
-
+    // ventasdto.forEach(v => {
+    //   if (Number(v.folio) === 13786) {
+    //     console.log(v)
+    //   }
+    // })
+    // return
     const data = await fetch('http://localhost:3010/ventas/createAll', {
       method: 'POST',
       headers: {
@@ -687,6 +725,14 @@ export class DbfReaderService implements OnModuleInit {
     const dbf = await DBFFile.open(ruta);
     const ventas_por_item =
       (await dbf.readRecords()) as any as venta_por_item[];
+
+
+    // ventas_por_item.forEach(v => {
+    //   if (v.DOCUZOFR === "201") {
+    //     console.log(v)
+    //   }
+    // })
+    // return
     //  "KNUMFOLI": "002810",
     //  "DOCUZOFR": "201",
     //  "KNUMDOCU": "000000013756",
@@ -720,8 +766,6 @@ export class DbfReaderService implements OnModuleInit {
             },
           ]);
         }
-
-
       }
     });
 

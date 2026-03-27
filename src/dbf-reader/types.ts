@@ -96,7 +96,7 @@ export interface dbf_inventario {
   VIUPROD2: string | null;
   NROCONT: string;
 }
-export interface comprasZetas {
+export interface itemsZeta {
   KNUMEZET: string,
   ADULEGAL: string,
   CODUNICO: string,
@@ -320,6 +320,14 @@ export interface seguimientoDto {
   RESOLSII: string | null;
   GARANTIA: string | null;
   FACTURA: string;
+}
+
+export interface paridade {
+  FECHADOC: Date,
+  RELACION: number,
+  MONEDAAA: string,
+  DESMONE: string,
+  UTM: string | null
 }
 
 export interface movimientoDocumento {
@@ -616,6 +624,7 @@ export interface ventasDTO {
   folio: string;
   nota_venta: string;
   total: number;
+  vendedor_codigo: string
   rut: string
   items: {
     folio: string;
@@ -639,6 +648,8 @@ export interface venta_diaria {
   folio: string;
   cantidad: number;
   id_interno: string;
+  descripcion: string
+  visacion: string
   precio_total: number;
   precio_unidad: number;
 }
@@ -646,8 +657,18 @@ export interface venta_diaria {
 export interface compras_traspaso {
   numero_ingreso: string;
   tipo_documento: string
+  nombre_cliente,
+  hora: string
   fecha: Date;
   codigo: string;
+  items: {
+    codigo_visacion: string,
+    cod_unico: string,
+    cantidad: number,
+    descripcion: string,
+    costo_total: number,
+    costo_unidad: number,
+  }[]
 }
 
 export interface neumatico_dto {

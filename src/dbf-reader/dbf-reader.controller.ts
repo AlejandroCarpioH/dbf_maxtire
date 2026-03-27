@@ -65,7 +65,7 @@ export class DbfReaderController {
 
   @Get('movimientoDocumento')
   movimientoDocumento() {
-    return this.dbfReaderIngresoComprasService.compraZetaTraspaso();
+    return this.dbfReaderIngresoComprasService.traeZetas();
   }
 
 
