@@ -173,8 +173,8 @@ export class DbfReaderIngresoComprasService {
 
         // await this.compraZetaTraspaso()
         // await this.traeItemsZeta()
-        // await this.traeZetas()
-        await this.test()
+        await this.traeZetas()
+        // await this.test()
         // await this.inventario()
     }
 
@@ -242,15 +242,15 @@ export class DbfReaderIngresoComprasService {
         // return
 
 
-        zetas.forEach(z => {
-            if (z.KNUMFOLI === "018970") {
-                console.log(z)
-            }
-        })
+        // zetas.forEach(z => {
+        //     if (z.KNUMFOLI === "018970") {
+        //         console.log(z)
+        //     }
+        // })
 
 
 
-        return
+
 
         this.zeta.clear()
         zetas.forEach(dm => {
@@ -345,7 +345,7 @@ export class DbfReaderIngresoComprasService {
 
 
         compras_traspaso.forEach(ct => {
-            if (ct.codigo === "018970") {
+            if (ct.codigo === "370089") {
                 console.log(ct)
             }
         })

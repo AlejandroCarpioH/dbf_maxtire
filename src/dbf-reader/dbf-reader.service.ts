@@ -35,7 +35,9 @@ export class DbfReaderService implements OnModuleInit {
     "002551",
     "002552",
   ]
-  private ruta = `${this.ruta_base_maxtire}inventar.dbf`;
+  private ruta_inventario = `${this.ruta_base_maxtire}inventar.dbf`;
+  private ruta_clientes = `${this.ruta_base_maxtire}iclientes.dbf`;
+  private ruta_ = `${this.ruta_base_maxtire}inventar.dbf`;
   private ruta_test = 'Z:\\ale\\prueba.txt';
   private indexRut = new Map();
   private ventas_por_items_map = new Map<
@@ -98,7 +100,6 @@ export class DbfReaderService implements OnModuleInit {
     }
   >();
 
-
   private seguimientoMap = new Map<string,
     {
       cliente: string
@@ -110,18 +111,27 @@ export class DbfReaderService implements OnModuleInit {
       vendedor_codigo: string
     }>()
 
-
-
-
   onModuleInit() {
-    console.log('iniciado');
-    this.watchDBF();
+    this.watchInventario();
+  }
+  watchCliente() {
+    const watcher = chokidar.watch(this.ruta_clientes, {
+      usePolling: true,
+      interval: 1000,
+      ignoreInitial: true,
+      awaitWriteFinish: true,
+    });
+
+    watcher.on('add', (path) => console.log('Archivo creado:', path));
+    watcher.on('change', (path) => {
+      this.clientes();
+      console.log('Archivo modificado:', path);
+    });
+    watcher.on('unlink', (path) => console.log('Archivo eliminado:', path));
   }
 
-
-
-  watchDBF() {
-    const watcher = chokidar.watch(this.ruta, {
+  watchInventario() {
+    const watcher = chokidar.watch(this.ruta_inventario, {
       usePolling: true,
       interval: 1000,
       ignoreInitial: true,
@@ -408,8 +418,6 @@ export class DbfReaderService implements OnModuleInit {
             },
           ]);
         }
-
-
       }
     });
 
@@ -432,7 +440,6 @@ export class DbfReaderService implements OnModuleInit {
             precio_unidad: d.precio_und
           })
         })
-
       }
       result.push({ ...venta, items: ventaDiaria.length > 0 ? ventaDiaria : [] });
     });
@@ -573,7 +580,7 @@ export class DbfReaderService implements OnModuleInit {
     // })
 
     // ventasdto.forEach(v => {
-    //   if (Number(v.folio) === 13786) {
+    //   if (Number(v.folio) === 13264) {
     //     console.log(v)
     //   }
     // })
@@ -660,6 +667,7 @@ export class DbfReaderService implements OnModuleInit {
       body: JSON.stringify(clientes_),
     });
     const result = await data.text();
+    await this.direccion()
     return result;
     // console.log(this.clienteMap);
   }
@@ -736,6 +744,8 @@ export class DbfReaderService implements OnModuleInit {
     //  "KNUMFOLI": "002810",
     //  "DOCUZOFR": "201",
     //  "KNUMDOCU": "000000013756",
+
+
     ventas_por_item.forEach((venta) => {
       if (venta.DOCUZOFR.trim() === '201') {
         if (this.ventas_por_items_map.get(venta.KNUMFOLI)) {
@@ -755,6 +765,7 @@ export class DbfReaderService implements OnModuleInit {
         } else {
           this.ventas_por_items_map.set(venta.KNUMFOLI, [
             {
+
               cantidad: Number(venta.CANTSALI),
               codigo_unico: venta.CODUNICO,
               descripcion: venta.DESCRIP,
@@ -763,6 +774,7 @@ export class DbfReaderService implements OnModuleInit {
               precio_und: Number(venta.PRECDOCD),
               visacion: venta.KNUMEZET,
               nota_venta: venta.KNUMFOLI
+
             },
           ]);
         }
@@ -800,7 +812,7 @@ export class DbfReaderService implements OnModuleInit {
   }
 
   async inventario(): Promise<dbf_inventario[]> {
-    const dbf = await DBFFile.open(this.ruta);
+    const dbf = await DBFFile.open(this.ruta_inventario);
 
     // console.log(dbf.recordCount)
     // console.log(dbf.fields)
@@ -819,7 +831,7 @@ export class DbfReaderService implements OnModuleInit {
   }
 
   async neumaticos(): Promise<neumatico_dto[]> {
-    const dbf = await DBFFile.open(this.ruta);
+    const dbf = await DBFFile.open(this.ruta_inventario);
 
     // console.log(dbf.recordCount)
     // console.log(dbf.fields)
