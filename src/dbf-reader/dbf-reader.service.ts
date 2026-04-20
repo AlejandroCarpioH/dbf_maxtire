@@ -24,7 +24,8 @@ import {
 
 @Injectable()
 export class DbfReaderService implements OnModuleInit {
-  private ruta_base_maxtire = 'Z:\\newdesar\\Winfac_nna\\Base\\';
+  // \\192.168.100.72\rednew\newdesar
+  private ruta_base_maxtire = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\';
   private ruta_local = './data/Winfac_nna/Base/';
 
   valores_sin_folio = [
@@ -151,7 +152,7 @@ export class DbfReaderService implements OnModuleInit {
   }
 
   async seguimientoDto() {
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\movidcto.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\movidcto.dbf';
 
     const dbf = await DBFFile.open(ruta);
 
@@ -214,7 +215,7 @@ export class DbfReaderService implements OnModuleInit {
   }
 
   async usuarios() {
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\personal.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\personal.dbf';
 
     const dbfs = await DBFFile.open(ruta);
     const usuarios = await dbfs.readRecords()
@@ -248,7 +249,7 @@ export class DbfReaderService implements OnModuleInit {
   async ventasDelDia(): Promise<ventasdelDia[]> {
 
     this.ventas_por_items_map.clear();
-    const ruta_ventas = 'Z:\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
+    const ruta_ventas = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/Base/itemdcto.dbf',
@@ -299,7 +300,7 @@ export class DbfReaderService implements OnModuleInit {
     this.ventasMap.clear();
     // esto trae las ventas por total factura no items
 
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\docsve.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\docsve.dbf';
 
     const dbf = await DBFFile.open(ruta);
 
@@ -376,7 +377,7 @@ export class DbfReaderService implements OnModuleInit {
 
   async ventasDiarias() {
     this.ventas_por_items_map.clear();
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/Base/itemdcto.dbf',
@@ -455,7 +456,7 @@ export class DbfReaderService implements OnModuleInit {
     this.ventasMap.clear();
     // esto trae las ventas por total factura no items
 
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\docsve.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\docsve.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/docsve.dbf',
@@ -466,9 +467,14 @@ export class DbfReaderService implements OnModuleInit {
     const ventas = (await dbf.readRecords()) as any as venta[];
 
     // ventas.forEach(v => {
-    //   if (v.ESTADO !== "CONFIRMADO" && v.ESTADO !== "VISADO") {
+    //   // if (v.ESTADO !== "CONFIRMADO" && v.ESTADO !== "VISADO") {
+    //   const fecha = new Date(v.FECHA)
+    //   if(fecha.getFullYear() === 2024){
     //     console.log(v)
     //   }
+    //   // if (Number(v.DOCU) === 10841) {
+    //   //   console.log(v)
+    //   // }
     // })
 
     // return
@@ -477,12 +483,24 @@ export class DbfReaderService implements OnModuleInit {
 
     await this.ventas_por_items();
 
+    // this.ventas_por_items_map.forEach(v=>{
+    //   v.forEach(venta=>{
+    //     if(venta.folio === '000000013817'){
+    //       console.log({venta})
+    //     }
+    //   })
+    // })
+
+    // return
+
     ventas.forEach((venta) => {
+      // console.log(venta.DOCU)
+      if(venta.KNUMFOLI === '011977'){
+        // console.log(venta)
+      }
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
       let rut = ""
       let vendedor_codigo = ""
-
-
 
       let total = 0
       if (ventaxitem !== undefined) {
@@ -517,9 +535,9 @@ export class DbfReaderService implements OnModuleInit {
     });
 
     // this.ventasMap.forEach(venta => {
-    //   // if (venta.folio === "000000012939") {
+    //   if (venta.folio === "000000010841") {
     //   console.log(venta)
-    //   // }
+    //   }
     // })
 
     // return
@@ -542,7 +560,6 @@ export class DbfReaderService implements OnModuleInit {
             precio_unidad: Math.round(d.precio_und)
           })
         })
-
       }
 
 
@@ -551,7 +568,6 @@ export class DbfReaderService implements OnModuleInit {
       const month = fechaSinFormato.getUTCMonth();
       const day = fechaSinFormato.getUTCDate();
       const fechaChileUTC = new Date(Date.UTC(year, month, day, 4, 0, 0));
-
 
       ventasdto.push(
         {
@@ -562,7 +578,6 @@ export class DbfReaderService implements OnModuleInit {
           rut: venta.rut,
           vendedor_codigo: venta.vendedor_codigo,
           items: ventaDiaria
-
         })
     })
     // ventasdto.forEach(v => {
@@ -580,9 +595,15 @@ export class DbfReaderService implements OnModuleInit {
     // })
 
     // ventasdto.forEach(v => {
-    //   if (Number(v.folio) === 13264) {
+    //   console.log(ventasdto.length)
+    //   if(v.fecha.getFullYear()=== 2026){
     //     console.log(v)
+        
     //   }
+      
+    //   // if (Number(v.folio) === 13569) {
+    //   //   console.log(v)
+    //   // }
     // })
     // return
     const data = await fetch('http://localhost:3010/ventas/createAll', {
@@ -611,7 +632,7 @@ export class DbfReaderService implements OnModuleInit {
   }
 
   async clientes() {
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\clientes.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\clientes.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/Base/clientes.dbf',
@@ -674,7 +695,7 @@ export class DbfReaderService implements OnModuleInit {
 
   async direccion() {
     this.direccionesMap.clear();
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\direccio.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\direccio.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/Base/direccio.dbf',
@@ -724,7 +745,7 @@ export class DbfReaderService implements OnModuleInit {
 
   async ventas_por_items() {
     this.ventas_por_items_map.clear();
-    const ruta = 'Z:\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
+    const ruta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
     const ruta_local = path.join(
       __dirname,
       '../../src/dbf-reader/data/Winfac_nna/Base/itemdcto.dbf',
@@ -734,7 +755,13 @@ export class DbfReaderService implements OnModuleInit {
     const ventas_por_item =
       (await dbf.readRecords()) as any as venta_por_item[];
 
+    //   ventas_por_item.forEach(vi=>{
+    //     if(vi.KNUMFOLI=== '011988'){
+    //       console.log(vi)
+    //     } 
+    //   })
 
+    // return
     // ventas_por_item.forEach(v => {
     //   if (v.DOCUZOFR === "201") {
     //     console.log(v)
@@ -785,7 +812,8 @@ export class DbfReaderService implements OnModuleInit {
     // return
     const items_por_venta: items_por_venta[] = []
 
-
+//     console.log(this.ventas_por_items_map.get("011988"))
+// return
     this.ventas_por_items_map.forEach((ventas) => {
       for (let venta of ventas) {
         items_por_venta.push({

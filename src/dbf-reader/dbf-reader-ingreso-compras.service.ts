@@ -74,7 +74,7 @@ export class DbfReaderIngresoComprasService {
     }>()
 
     async paridade() {
-        const productoZeta = 'Z:\\newdesar\\Winfac_nna\\Base\\paridade.dbf';// inventar
+        const productoZeta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\paridade.dbf';// inventar
         const dbf = await DBFFile.open(productoZeta);
 
         const paridades = await dbf.readRecords() as any as paridade[]
@@ -87,7 +87,7 @@ export class DbfReaderIngresoComprasService {
     }
 
     async inventario() {
-        const productoZeta = 'Z:\\newdesar\\Winfac_nna\\Base\\inventar.dbf';// inventar
+        const productoZeta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\inventar.dbf';// inventar
         const dbf = await DBFFile.open(productoZeta);
 
         const inventario = await dbf.readRecords() as any as dbf_inventario[]
@@ -133,8 +133,9 @@ export class DbfReaderIngresoComprasService {
     async test() {
         // console.log(this.movimientoDocumentoMap)
         // return
-        const productoZeta2 = 'Z:\\newdesar\\TotVentas\\totventas.dbf';// inventar
-        const productoZeta = 'Z:\\newdesar\\Winfac_nna\\Base\\historia.dbf';// inventar
+        // \\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\
+        const productoZeta2 = '\\\\192.168.100.72\\rednew\\newdesar\\TotVentas\\totventas.dbf';// inventar
+        const productoZeta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\historia.dbf';// inventar
         const dbf = await DBFFile.open(productoZeta2);
 
         const ventas = await dbf.readRecords()
@@ -182,7 +183,7 @@ export class DbfReaderIngresoComprasService {
     async traeItemsZeta() {
         //entrega por cada items seria el segundo 
         //KNUMEZET: '103-26-101026-001',
-        const productoZeta = 'Z:\\newdesar\\Winfac_nna\\Base\\prodzeta.dbf';
+        const productoZeta = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\prodzeta.dbf';
         const dbf = await DBFFile.open(productoZeta);
 
         const itemsZetas = await dbf.readRecords() as any as itemsZeta[]
@@ -212,7 +213,7 @@ export class DbfReaderIngresoComprasService {
         await this.comprasItems()
         // inicio en las compras se genera el documento inicial completo entrega fecha y datos del distribuidor
         //CADUANA: '101-26-010548',
-        const movimientoDocumento = 'Z:\\newdesar\\Winfac_nna\\Base\\movidcto.dbf';
+        const movimientoDocumento = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\movidcto.dbf';
         const dbf = await DBFFile.open(movimientoDocumento);
 
         const zetas = await dbf.readRecords() as any as movimientoDocumento[]
@@ -322,9 +323,11 @@ export class DbfReaderIngresoComprasService {
             const month = fechaSinFormato.getUTCMonth();
             const day = fechaSinFormato.getUTCDate();
             const fechaChileUTC = new Date(Date.UTC(year, month, day, 4, 0, 0));
+            const split = itemsZetas[0].codigo_visacion.split('-')
+            const codigo_ingreso = `${split[0]}-${split[1]}-${split[2]}`
             compras_traspaso.push({
                 fecha: fechaChileUTC,
-                numero_ingreso: m.cod_aduana,
+                numero_ingreso: m.cod_aduana === '' ? codigo_ingreso: m.cod_aduana,
                 codigo: m.codigo,
                 nombre_cliente: m.nombre_cliente,
                 hora: m.hora,
@@ -345,11 +348,24 @@ export class DbfReaderIngresoComprasService {
 
 
         compras_traspaso.forEach(ct => {
-            if (ct.codigo === "370089") {
-                console.log(ct)
-            }
+            // if (ct.codigo === "370089") {
+                if(ct.fecha.getFullYear() === 2025 && ct.tipo_documento === '101'){
+                    // if(ct.codigo === '009547'){
+                    //     console.log(ct)
+                    // }
+                    if(ct.items.some(item=> item.descripcion.includes('TT78'))){
+                        console.log(ct)
+                    }
+                    // ct.items.forEach(item=>{
+                    //     if(item.codigo_visacion.includes('101-25-074526')){
+                    //         console.log(ct)
+                    //     }
+                    // })
+                }
+            // }
         })
-        return
+        // return
+
         const result = await fetch(`http://localhost:3010/contenedores/createAll`, {
             method: "POST",
             headers: {
@@ -367,7 +383,7 @@ export class DbfReaderIngresoComprasService {
     async comprasItems() {
         //entrega items de las compras este seria el tercero en compras  entrega cantidad y codigo de neumatico
         // KNUMEZET: '103-26-079561-002-GLP',
-        const ventasPorItems = 'Z:\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
+        const ventasPorItems = '\\\\192.168.100.72\\rednew\\newdesar\\Winfac_nna\\Base\\itemdcto.dbf';
         const dbf = await DBFFile.open(ventasPorItems);
 
         const ventas = await dbf.readRecords() as any as venta_por_item[]
