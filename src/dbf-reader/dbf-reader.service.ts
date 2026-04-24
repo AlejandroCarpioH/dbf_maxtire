@@ -163,10 +163,20 @@ export class DbfReaderService implements OnModuleInit {
     //  KNUMDOCU: '000000010864',
     //  KNUMFOLI: '011995',
     // seguimientoDto.forEach(s => {
-    //   if (s.KNUMDOCU === '000000013786') {
+    //   if (s.KNUMDOCU === '000000010782') {
     //     console.log(s)
     //   }
     // })
+    // seguimientoDto.forEach(s => {
+    //   if (s.KNUMDOCU.includes("2026")) {
+    //     console.log(s)
+    //   }
+    // })
+    // // seguimientoDto.forEach(s => {
+    // //   if (new Date(s.FECHANVT).getFullYear() === 2023) {
+    // //     console.log(s)
+    // //   }
+    // // })
     // return
 
 
@@ -256,6 +266,7 @@ export class DbfReaderService implements OnModuleInit {
     );
 
     const dbfs = await DBFFile.open(ruta_ventas);
+
     const ventas_por_item =
       (await dbfs.readRecords()) as any as venta_por_item[];
 
@@ -307,7 +318,7 @@ export class DbfReaderService implements OnModuleInit {
     const ventas = (await dbf.readRecords()) as any as venta[];
 
     ventas.forEach((venta) => {
-      console.log(venta.KNUMFOLI)
+      console.log(venta.FECHA)
 
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
       let rut = ""
@@ -465,17 +476,17 @@ export class DbfReaderService implements OnModuleInit {
     const dbf = await DBFFile.open(ruta);
 
     const ventas = (await dbf.readRecords()) as any as venta[];
+    const fechas: string[] = []
 
     // ventas.forEach(v => {
     //   // if (v.ESTADO !== "CONFIRMADO" && v.ESTADO !== "VISADO") {
-    //   const fecha = new Date(v.FECHA)
-    //   if(fecha.getFullYear() === 2024){
-    //     console.log(v)
-    //   }
+    //   fechas.push(v.FECHA)
+
     //   // if (Number(v.DOCU) === 10841) {
     //   //   console.log(v)
     //   // }
     // })
+    // console.log(fechas.slice(0, 10))
 
     // return
 
@@ -495,7 +506,7 @@ export class DbfReaderService implements OnModuleInit {
 
     ventas.forEach((venta) => {
       // console.log(venta.DOCU)
-      if(venta.KNUMFOLI === '011977'){
+      if (venta.KNUMFOLI === '011977') {
         // console.log(venta)
       }
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
@@ -541,7 +552,6 @@ export class DbfReaderService implements OnModuleInit {
     // })
 
     // return
-
 
     const ventasdto: ventasDTO[] = []
     this.ventasMap.forEach(venta => {
@@ -595,12 +605,12 @@ export class DbfReaderService implements OnModuleInit {
     // })
 
     // ventasdto.forEach(v => {
-    //   console.log(ventasdto.length)
-    //   if(v.fecha.getFullYear()=== 2026){
-    //     console.log(v)
-        
+    //   // console.log(ventasdto.length)
+    //   if (v.fecha.getFullYear() === 2024) {
+    //     // console.log(v)
+
     //   }
-      
+
     //   // if (Number(v.folio) === 13569) {
     //   //   console.log(v)
     //   // }
@@ -812,8 +822,8 @@ export class DbfReaderService implements OnModuleInit {
     // return
     const items_por_venta: items_por_venta[] = []
 
-//     console.log(this.ventas_por_items_map.get("011988"))
-// return
+    //     console.log(this.ventas_por_items_map.get("011988"))
+    // return
     this.ventas_por_items_map.forEach((ventas) => {
       for (let venta of ventas) {
         items_por_venta.push({
@@ -854,6 +864,7 @@ export class DbfReaderService implements OnModuleInit {
     records.forEach((r) => {
       if (!(contiene.includes(r.CODUNICO) || Number(r.STOCFISI) === 0))
         datos.push(r);
+      // console.log(r)
     });
     return datos;
   }
