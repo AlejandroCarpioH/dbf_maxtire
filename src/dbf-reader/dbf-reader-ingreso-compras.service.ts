@@ -141,7 +141,7 @@ export class DbfReaderIngresoComprasService {
         const ventas = await dbf.readRecords()
         ventas.forEach(v => {
             // if (v["TIPOMOVI"] !== "V") {
-            console.log(v)
+            // console.log(v)
             // }
         })
 
@@ -327,7 +327,7 @@ export class DbfReaderIngresoComprasService {
             const codigo_ingreso = `${split[0]}-${split[1]}-${split[2]}`
             compras_traspaso.push({
                 fecha: fechaChileUTC,
-                numero_ingreso: m.cod_aduana === '' ? codigo_ingreso: m.cod_aduana,
+                numero_ingreso: m.cod_aduana === '' ? codigo_ingreso : m.cod_aduana,
                 codigo: m.codigo,
                 nombre_cliente: m.nombre_cliente,
                 hora: m.hora,
@@ -349,19 +349,19 @@ export class DbfReaderIngresoComprasService {
 
         compras_traspaso.forEach(ct => {
             // if (ct.codigo === "370089") {
-                if(ct.fecha.getFullYear() === 2025 && ct.tipo_documento === '101'){
-                    // if(ct.codigo === '009547'){
-                    //     console.log(ct)
-                    // }
-                    if(ct.items.some(item=> item.descripcion.includes('TT78'))){
-                        console.log(ct)
-                    }
-                    // ct.items.forEach(item=>{
-                    //     if(item.codigo_visacion.includes('101-25-074526')){
-                    //         console.log(ct)
-                    //     }
-                    // })
+            if (ct.fecha.getFullYear() === 2025 && ct.tipo_documento === '101') {
+                // if(ct.codigo === '009547'){
+                //     console.log(ct)
+                // }
+                if (ct.items.some(item => item.descripcion.includes('TT78'))) {
+                    console.log(ct)
                 }
+                // ct.items.forEach(item=>{
+                //     if(item.codigo_visacion.includes('101-25-074526')){
+                //         console.log(ct)
+                //     }
+                // })
+            }
             // }
         })
         // return

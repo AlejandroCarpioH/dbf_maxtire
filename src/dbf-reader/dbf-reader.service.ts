@@ -21,6 +21,7 @@ import {
   ventasDiarias,
   ventasDTO,
 } from './types';
+import { ip } from 'src/configuracion';
 
 @Injectable()
 export class DbfReaderService implements OnModuleInit {
@@ -318,12 +319,12 @@ export class DbfReaderService implements OnModuleInit {
     const ventas = (await dbf.readRecords()) as any as venta[];
 
     ventas.forEach((venta) => {
-      console.log(venta.FECHA)
+      // console.log(venta.FECHA)
 
       const ventaxitem = this.ventas_por_items_map.get(venta.KNUMFOLI)
       let rut = ""
       let vendedor_codigo = ""
-      console.log(ventaxitem)
+      // console.log(ventaxitem)
       const seguimiento = this.seguimientoMap.get(venta.KNUMFOLI)
       if (seguimiento) {
         rut = seguimiento.rut
@@ -616,7 +617,9 @@ export class DbfReaderService implements OnModuleInit {
     //   // }
     // })
     // return
-    const data = await fetch('http://localhost:3010/ventas/createAll', {
+    const ip_aws = 'https://www.koyote.cl/backend-db-pagos/ventas/createAll'
+    const ip_local = 'http://localhost:3010/ventas/createAll'
+    const data = await fetch(`${ip}/ventas/createAll`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -690,7 +693,7 @@ export class DbfReaderService implements OnModuleInit {
         digito_verificador: clienteData.digito_verificador.trim()
       });
     });
-    const data = await fetch('http://localhost:3010/clientes/createAll', {
+    const data = await fetch(`${ip}/clientes/createAll`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -742,7 +745,7 @@ export class DbfReaderService implements OnModuleInit {
       direcciones_.push([...direccionesData]);
     });
 
-    const data = await fetch('http://localhost:3010/direcciones/createAll', {
+    const data = await fetch(`${ip}/direcciones/createAll`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -837,8 +840,9 @@ export class DbfReaderService implements OnModuleInit {
         })
       }
     });
-
-    const data = await fetch('http://localhost:3010/items-ventas-winfac/createAll', {
+    // const ip_aws = 'https://www.koyote.cl/backend-db-pagos/items-ventas-winfac/createAll'
+    // const ip_local = 'http://localhost:3010/items-ventas-winfac/createAll'
+    const data = await fetch(`${ip}/items-ventas-winfac/createAll`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
