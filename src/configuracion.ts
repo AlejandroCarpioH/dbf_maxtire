@@ -3,4 +3,4 @@ const configuracion = {
     ip_aws: "https://www.koyote.cl/backend-db-pagos"
 }
 
-export const ip = configuracion['ip_aws']
+export const ip = configuracion['ip_local']
