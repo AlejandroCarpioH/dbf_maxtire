@@ -8,6 +8,7 @@ import {
     paridade,
     venta_por_item,
 } from './types';
+import { ip } from "src/configuracion";
 
 
 @Injectable()
@@ -349,13 +350,13 @@ export class DbfReaderIngresoComprasService {
 
         compras_traspaso.forEach(ct => {
             // if (ct.codigo === "370089") {
-            if (ct.fecha.getFullYear() === 2025 && ct.tipo_documento === '101') {
-                // if(ct.codigo === '009547'){
+            if (ct.fecha.getFullYear() === 2026 && ct.tipo_documento === '103') {
+                // if (ct.codigo === '009547') {
+                console.log(ct)
+                // }
+                // if (ct.items.some(item => item.descripcion.includes('TT78'))) {
                 //     console.log(ct)
                 // }
-                if (ct.items.some(item => item.descripcion.includes('TT78'))) {
-                    console.log(ct)
-                }
                 // ct.items.forEach(item=>{
                 //     if(item.codigo_visacion.includes('101-25-074526')){
                 //         console.log(ct)
@@ -366,7 +367,8 @@ export class DbfReaderIngresoComprasService {
         })
         // return
 
-        const result = await fetch(`http://localhost:3010/contenedores/createAll`, {
+        // const result = await fetch(`http://localhost:5050/contenedores/createAll`, {
+        const result = await fetch(`${ip}/contenedores/createAll`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json"
